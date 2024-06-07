@@ -2,24 +2,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
-class Solution{
+class Solution {
   public:
-    int findExtra(int a[], int b[], int n) {
+    int findExtra(int n, int arr1[], int arr2[]) {
         // add code here.
-         int low = 0,high = n-1;
-        int ans = n-1;
-        while(low<=high){
-            int mid = (low+high)/2;
-            if(a[mid]!=b[mid]){
-                ans = mid;   
-                high = mid-1;    //we have to go minimum possible index
-            }
-            else{
-                low = mid+1;
-            }
+         int len=n;
+        for(int i=0;i<n;i++){
+            if(arr1[i]!=arr2[i])    return i;
         }
-        return ans;
+        return len;
     }
 };
 
@@ -30,15 +23,15 @@ int main() {
     while (t--) {
         int n;
         cin >> n;
-        int a[n], b[n - 1];
+        int arr1[n], arr2[n - 1];
         for (int i = 0; i < n; i++) {
-            cin >> a[i];
+            cin >> arr1[i];
         }
         for (int i = 0; i < n - 1; i++) {
-            cin >> b[i];
+            cin >> arr2[i];
         }
         Solution obj;
-        cout << obj.findExtra(a, b, n) << endl;
+        cout << obj.findExtra(n, arr1, arr2) << endl;
     }
 }
 // } Driver Code Ends
