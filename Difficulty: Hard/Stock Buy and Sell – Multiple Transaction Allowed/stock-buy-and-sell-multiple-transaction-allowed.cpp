@@ -1,75 +1,66 @@
 //{ Driver Code Starts
-#include<bits/stdc++.h>
+// Initial template for C++
+#include <bits/stdc++.h>
 using namespace std;
-
-
-class Array
-{
-public:
-    template <class T>
-    static void input(vector<T> &A,int n)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            scanf("%d ",&A[i]);
-        }
-    }
-
-    template <class T>
-    static void print(vector<T> &A)
-    {
-        for (int i = 0; i < A.size(); i++)
-        {
-            cout << A[i] << " ";
-        }
-        cout << endl;
-    }
-};
 
 
 // } Driver Code Ends
 
 class Solution {
-public:
-    int stockBuyAndSell(int n, vector<int> &price) {
-        int i = 0, buy = 0, sell = 0, profit = 0;
-        while (i < n - 1) {
-            // Find next local minima
-            while (i < n - 1 && price[i + 1] <= price[i])
-                i++;
-            buy = i++;
-            // Find next local maxima
-            while (i < n && price[i] >= price[i - 1])
-                i++;
-            sell = i - 1;
-            // Add profit
-            profit += price[sell] - price[buy];
+  public:
+    int maximumProfit(vector<int> &prices) {
+        // code here
+        int n=prices.size();
+    int l=0;
+    int r=l+1;
+    int maxProfit=0;
+    int currMax=-1;
+    while(r<n){
+        if(prices[l]<prices[r]){
+            currMax=max(currMax,prices[r]-prices[l]);
+            if(prices[r+1]<prices[r]){
+                maxProfit+=currMax;
+                currMax=-1;
+                l=r+1;
+                r=l+1;
+            }else if(r==n-1){
+               maxProfit+=currMax;
+               r++; 
+            }else{
+               r++;
+            }
+        }else{
+            l=r;
+            r=l+1;
         }
-        return profit;
+    }
+    return maxProfit;
     }
 };
 
 
 //{ Driver Code Starts.
-
-int main(){
+int main() {
     int t;
-    scanf("%d ",&t);
-    while(t--){
-        
-        int n;
-        scanf("%d",&n);
-        
-        
-        vector<int> prices(n);
-        Array::input(prices,n);
-        
-        Solution obj;
-        int res = obj.stockBuyAndSell(n, prices);
-        
-        cout<<res<<endl;
-        
-    }
-}
 
+    cin >> t;
+    cin.ignore();
+    while (t--) {
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
+        }
+        int n = arr.size();
+        Solution ob;
+        int res = ob.maximumProfit(arr);
+        cout << res;
+
+        cout << "\n";
+    }
+    return 0;
+}
 // } Driver Code Ends
