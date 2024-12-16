@@ -6,24 +6,54 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    int kthElement(int k, vector<int>& arr1, vector<int>& arr2) {
+    int kthElement(vector<int>& a, vector<int>& b, int k) {
         // code here
-           int i=0, j=0, ans=0;
-        while(k){
-            if(i==arr1.size()){ans=arr2[j]; j++; k--;
-               if(k==0){return ans;}
-               continue;
+        int na = a.size();
+        int nb = b.size();
+        int ans, flag=0;
+            
+        int i=0, j=0;
+        while(i<na && j<nb)
+        {
+            if(a[i]<b[j])
+            {
+                ans = a[i];
+                flag++;
+                i++;
             }
-            if(j==arr2.size()){ans=arr1[i]; i++; k--;
-               if(k==0){return ans;}
-               continue;
+            else if(a[i]>b[j])
+            {
+                ans = b[j];
+                flag++;
+                j++;
             }
-            if(arr1[i]>arr2[j]){ans=arr2[j]; j++; k--;}
-            else if(arr1[i]<arr2[j]){ans=arr1[i]; i++; k--;}
-            else{ans=arr1[i]; i++; j++; k-=2;}
-            if(k<1){return ans;}
+            else
+            {
+                ans = a[i];
+                flag+=2;
+                i++;
+                j++;
+            }
+            if(flag>=k )
+                return ans;
         }
-        return 0;
+        while(i<na)
+        {
+            ans = a[i];
+            i++;
+            flag++;
+            if(flag==k)
+                return ans;
+        }
+        
+        while(j<nb)
+        {
+            ans = b[j];
+            flag++;    
+            j++;
+            if(flag==k)
+                return ans;
+        }
     }
 };
 
@@ -40,22 +70,22 @@ int main() {
         cin.ignore();
         string input;
         int num;
-        vector<int> arr1, arr2;
+        vector<int> a, b;
 
         getline(cin, input);
         stringstream s2(input);
         while (s2 >> num) {
-            arr1.push_back(num);
+            a.push_back(num);
         }
 
         getline(cin, input);
         stringstream s3(input);
         while (s3 >> num) {
-            arr2.push_back(num);
+            b.push_back(num);
         }
 
         Solution ob;
-        cout << ob.kthElement(k, arr1, arr2) << endl;
+        cout << ob.kthElement(a, b, k) << endl << "~\n";
     }
     return 0;
 }
