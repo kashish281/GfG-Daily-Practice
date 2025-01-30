@@ -4,82 +4,75 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
 // User function Template for C++
 
-class Solution{
-public:
+class Solution {
+  public:
     vector<vector<int>> res;
-    bool isSafe(int row, int col, int n, vector<vector<int>>&ans){
-        // int i,j;
-        for( int i=0;i<col;i++)
-         if(ans[row][i]) return false;
-         
-        // left upper diagonal 
-        for(int i=row,j=col; i>=0 && j>=0 ; i--,j--)
-         if(ans[i][j]) return false;
-        
-        for(int i=row,j=col; i<n && j>=0 ; i++,j--)
-         if(ans[i][j]) return false;
-         
-         return true;
-        
-    }
-    
-    bool solveNQUtil(vector<vector<int>> &ans, int col, int n, vector<int>path){
-        if(col>=n) { 
-            res.push_back(path);
-            return true;
+
+    void solve(int col, int n, vector<vector<int>> &board, vector<int> &temp, vector<int> &leftRow, vector<int> &lowDiag, vector<int> &upDiag)
+    {
+        if(col==n){
+            res.push_back(temp);
+            return;
         }
-        
-        for(int i=0; i<n; i++){
-            if(isSafe(i,col,n,ans)){
-                ans[i][col]=1;
-                path[col]=i+1;
-                if(solveNQUtil(ans,col+1,n,path)!=true);
-                    ans[i][col]=0;
+        for(int row=0;row<n;row++){
+            if(leftRow[row]==0 && lowDiag[row+col]==0 && upDiag[n-1+col-row]==0){
+                board[row][col]=1;
+                leftRow[row]=1;
+                lowDiag[row+col]=1;
+                upDiag[n-1+col-row]=1;
+                temp.push_back(row+1);
+                
+                solve(col+1,n,board,temp,leftRow,lowDiag,upDiag);
+                
+                temp.pop_back();
+                board[row][col]=0;
+                leftRow[row]=0;
+                lowDiag[row+col]=0;
+                upDiag[n-1+col-row]=0;
             }
         }
-        
-        return false;
     }
-    
     vector<vector<int>> nQueen(int n) {
         // code here
-        vector<vector<int>>ans(n,vector<int>(n,0));
-        vector<int> path(n,0);
-        
-        solveNQUtil(ans,0,n,path);
-        
-        
+        vector<vector<int>> board(n,vector<int>(n));
+        vector<int> temp;
+        vector<int> leftRow(n), lowDiag(2*n-1), upDiag(2*n-1);
+        solve(0,n,board,temp,leftRow,lowDiag,upDiag);
         return res;
-        
         
     }
 };
 
 //{ Driver Code Starts.
 
-int main(){
+int main() {
     int t;
-    cin>>t;
-    while(t--){
+    cin >> t;
+    while (t--) {
         int n;
-        cin>>n;
-        
+        cin >> n;
+
         Solution ob;
         vector<vector<int>> ans = ob.nQueen(n);
-        if(ans.size() == 0)
-            cout<<-1<<"\n";
+        if (ans.size() == 0)
+            cout << -1 << "\n";
         else {
-            for(int i = 0;i < ans.size();i++){
-                cout<<"[";
-                for(int u: ans[i])
-                    cout<<u<<" ";
-                cout<<"] ";
+            sort(ans.begin(), ans.end());
+            for (int i = 0; i < ans.size(); i++) {
+                cout << "[";
+                for (int u : ans[i])
+                    cout << u << " ";
+                cout << "] ";
             }
-            cout<<endl;
+            cout << endl;
         }
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
