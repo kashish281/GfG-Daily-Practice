@@ -17,30 +17,21 @@ struct Node {
 
 
 // } Driver Code Ends
-
-  class Solution {
+class Solution {
   public:
-    // Helper function to check whether a Binary Tree is BST or not.
-    bool ISBSThelper(Node* root, int min, int max) {
-        // An empty tree is a BST
-        if (root == NULL) {
-            return true;
-        }
-
-        // The value of the current node must be within the range [min, max]
-        if (root->data < min || root->data > max) {
-            return false;
-        }
-
-        // Recursively check the left subtree and right subtree
-        bool leftok = ISBSThelper(root->left, min, root->data - 1);
-        bool rightok = ISBSThelper(root->right, root->data + 1, max);
-        return leftok && rightok;
-    }
-
+    // Function to check whether a Binary Tree is BST or not.
     bool isBST(Node* root) {
-        // Initialize min and max values
-        return ISBSThelper(root, INT_MIN, INT_MAX);
+        // Your code here
+        return isBST(root, INT_MIN, INT_MAX);
+
+    }
+    bool isBST(Node *root, long min_val , long max_val){
+         if(root==NULL)
+        return true;
+        if(root->data>=max_val || root->data<=min_val)
+        return false;
+        return isBST(root->left , min_val , root->data)
+        && isBST(root->right , root->data, max_val);
     }
 
 };
@@ -140,6 +131,7 @@ int main() {
 
         else
             cout << "false\n";
+        cout << "~" << endl;
     }
     return 0;
 }
