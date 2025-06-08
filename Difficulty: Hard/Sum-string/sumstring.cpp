@@ -1,56 +1,29 @@
-//{ Driver Code Starts
-#include<bits/stdc++.h> 
-using namespace std; 
-
-// } Driver Code Ends
-class Solution{   
-public:
-    string add(string a, string b){
-        string ans;
-        reverse(a.begin(), a.end());
-        reverse(b.begin(), b.end());
-        for (int i=0, c = 0;i<a.size()||i<b.size()||c;i++){
-            int x = i<a.size()?a[i]-'0':0, y = i<b.size()?b[i]-'0':0, s = (x + y + c)%10;
-            c = (x + y + c) > 9;
-            ans.push_back(s+'0');
-        }
-        reverse(ans.begin(), ans.end());
-        return ans;
-    }
-    int isSumString(string s){
-        for (int i = 0;i<(int)s.size()-1;i++)
-            for (int j = i+1;j<s.size()-1;j++)
-            {
-                int a = j, b = i, c = 0;
-                while(true){
-                    int check = 1;
-                    string res = add(s.substr(c, b-c+1), s.substr(b+1, a-b));
-                    for (int k = 0,z = a+1;k<res.size();k++, z++ )
-                        if (z>=s.size()||s[z]!=res[k]) check = 0;
-                    if (!check) break;
-                    c = b+1, b = a, a += res.size();
-                    if (a>=s.size()-1) return 1;
-                }
+class Solution {
+  public:
+  bool f(int idx, int prev1, int prev2, string s, int len, int curr){
+        
+        int currNumber = 0;
+        for(int i = idx;i<s.size();i++){
+            
+            
+            currNumber = currNumber*10 + s[i]-'0';
+            if(i==s.size()-1 && (prev1+prev2==currNumber)) return true;
+            if((prev1+prev2==currNumber) || prev1==-1 || prev2==-1 || len<=1){
+                
+              
+                if(i+1<s.size() && s[i+1]=='0') continue;
+                if(f(i+1,currNumber,prev1,s,len+1,currNumber)) return true;
             }
-        return 0;
+            
+        }
+        return false;
+    }
+    bool isSumString(string &s) {
+        // code here
+         int n = s.size();
+        if(n<=2) return false;
+      
+        return f(0,-1,-1,s,0,0);
+        
     }
 };
-
-//{ Driver Code Starts.
-int main() 
-{ 
-    int t;
-    cin>>t;
-    while(t--)
-    {
-        string S;
-        cin >> S;
-        Solution ob;
-        cout << ob.isSumString(S) << endl;
-    
-cout << "~" << "\n";
-}
-    return 0; 
-} 
-
-// } Driver Code Ends
